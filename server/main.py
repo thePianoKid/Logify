@@ -7,15 +7,19 @@ import uvicorn
 app = FastAPI()
 debug_level = 'debug' # Options: 'critical', 'error', 'warning', 'info', 'debug', 'trace'.
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory='templates')
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get('/', response_class=HTMLResponse)
 async def read_item(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse('index.html', {'request': request})
+
+@app.post('/msg')
+def read_msg(info: dict):
+    return info
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host="127.0.0.1", port=5000, log_level=debug_level)
+    uvicorn.run('main:app', host='127.0.0.1', port=5000, log_level=debug_level)
